@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.worm</groupId>
+    <artifactId>result-spring-boot-starter</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>result-spring-boot-starter</name>
+    <description>Spring Boot 统一返回结果 Starter：ResponseBodyAdvice 统一包装 + ControllerAdvice 全局异常处理，一次接入全站接口格式一致</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 为什么：本开源版本面向 JDK 8 基线（Spring Boot 2.7 / Spring 5.3 / javax 命名空间） —— 干什么：编译源码级别与字节码目标均为 Java 8 -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <!-- 为什么：Lombok 1.18.30 发布于 JDK 21 之前，在 JDK 21 的 javac 下注解处理器静默失效；1.18.34 起官方支持 JDK 8~21 全基线 —— 干什么：固定 lombok 版本保证 JDK 8 与 JDK 21 下注解处理均生效 -->
+        <lombok.version>1.18.34</lombok.version>
+        <!-- 为什么：统一返回体携带 @Schema 注解供 Swagger/Knife4j 文档展示，starter 只需注解 API 本身，不应把文档 UI 传递给消费方 —— 干什么：仅依赖 swagger-annotations，不引入 knife4j/springdoc UI -->
+        <swagger-annotations.version>2.2.21</swagger-annotations.version>
+        <!-- 为什么：Boot 2.7 的 Web 容器（tomcat-embed）提供 javax.servlet-api，编译期需要、运行期由容器提供 —— 干什么：provided 作用域引入 -->
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <!-- 为什么：Spring 5.3 起 @Resource 所在的 javax.annotation-api 不再由 spring-context 传递，显式声明避免消费侧缺依赖 —— 干什么：固定 javax.annotation-api 版本 -->
+        <javax-annotation-api.version>1.3.2</javax-annotation-api.version>
+        <!-- 为什么：ConstraintViolationException 等校验异常由消费方的 Hibernate Validator 提供，starter 仅需在编译期引用 API —— 干什么：provided 作用域引入 -->
+        <validation-api.version>2.0.1.Final</validation-api.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 为什么：本项目独立发布，不依赖内部 BOM，直接导入 Spring Boot 官方 BOM 统一管理 spring-webmvc / jackson / starter-test 等版本 —— 干什么：以 import 方式引入 spring-boot-dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <!-- @Slf4j 生成的 Logger 与 Spring 内部日志均依赖 slf4j-api，版本由 Spring Boot BOM 管理 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- String 类型返回值与 writeJson 需要 JSON 序列化，版本由 Spring Boot BOM 统一管理 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- 统一返回体模型注解（@Schema），供 Swagger / Knife4j 文档展示 -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
+        </dependency>
+        <!-- javax.servlet：Boot 2.7 基线（Boot 3+ 为 jakarta.servlet），运行期由 Web 容器提供 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- javax.annotation：Boot 2 时代的注解命名空间 -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax-annotation-api.version}</version>
+        </dependency>
+        <!-- javax.validation：ConstraintViolationException 等，运行期由消费方的 Hibernate Validator 提供 -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
