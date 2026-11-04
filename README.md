@@ -27,12 +27,12 @@ Spring Boot 统一返回结果 Starter：一行依赖接入，全站 Controller 
 
 | 依赖 | 版本 |
 | --- | --- |
-| JDK | 8+ |
+| JDK | 17+ |
 | Maven | 3.6+ |
-| Spring Boot | 2.7.x |
+| Spring Boot | 4.0.6 |
 | Swagger 注解 | 可选（`swagger-annotations`，仅用于 `@Schema` 文档描述） |
 
-本仓库为 JDK 8 / Spring Boot 2.7 基线，编译产物为 Java 8 字节码，可直接用于 Spring Boot 2.x 项目。
+本仓库为 JDK 17 / Spring Boot 4.0.6 基线，编译产物为 Java 17 字节码，可直接用于 Spring Boot 4.x 项目。
 
 ## 快速开始
 
@@ -221,9 +221,9 @@ com.worm
 
 Controller 声明返回 String 时，Spring 已选定 `StringHttpMessageConverter`，若直接返回 `BaseResult` 对象会触发 `ClassCastException`。starter 先将包装结果序列化为 JSON 字符串再交还转换器，前端收到的仍是标准信封结构。
 
-### 5. 如何接入 Spring Boot 3 / jakarta 命名空间版本？
+### 5. 当前基线是否已使用 jakarta 命名空间？
 
-本仓库为 JDK 8 / Spring Boot 2.7（javax）基线的开源版本。jakarta 基线（Spring Boot 3+/JDK 17）请参考内部维护版本，或将本仓库的 `javax.*` 引用改为 `jakarta.*` 并升级至 `spring-boot-dependencies:3.x`。
+本仓库即为 JDK 17 / Spring Boot 4.0.6（jakarta 命名空间）基线，可直接用于 Spring Boot 4.x 项目，无需任何命名空间迁移。
 
 ## 许可证
 

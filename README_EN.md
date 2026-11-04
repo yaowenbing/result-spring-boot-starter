@@ -27,12 +27,12 @@ Business code only writes normal logic and `BaseException`; response formats and
 
 | Dependency | Version |
 | --- | --- |
-| JDK | 8+ |
+| JDK | 17+ |
 | Maven | 3.6+ |
-| Spring Boot | 2.7.x |
+| Spring Boot | 4.0.6 |
 | Swagger annotations | Optional (`swagger-annotations`, only for `@Schema` documentation) |
 
-This repository targets the JDK 8 / Spring Boot 2.7 baseline; build output is Java 8 bytecode, ready to use in Spring Boot 2.x projects.
+This repository targets the JDK 17 / Spring Boot 4.0.6 baseline; build output is Java 17 bytecode, ready to use in Spring Boot 4.x projects.
 
 ## Quick Start
 
@@ -221,9 +221,9 @@ They are not re-wrapped and are returned as-is. `BaseResult` leaves full control
 
 When a Controller declares a String return type, Spring has already selected `StringHttpMessageConverter`; returning a `BaseResult` object directly would trigger a `ClassCastException`. The starter serializes the wrapped result to a JSON string first and hands it back to the converter, so the frontend still receives the standard envelope structure.
 
-### 5. How do I use this with Spring Boot 3 / the jakarta namespace?
+### 5. Does the current baseline already use the jakarta namespace?
 
-This repository is the open-source JDK 8 / Spring Boot 2.7 (javax) baseline. For the jakarta baseline (Spring Boot 3+ / JDK 17), refer to the internally maintained version, or change this repository's `javax.*` references to `jakarta.*` and upgrade to `spring-boot-dependencies:3.x`.
+This repository itself is the JDK 17 / Spring Boot 4.0.6 (jakarta namespace) baseline, ready to use in Spring Boot 4.x projects with no namespace migration required.
 
 ## License
 
