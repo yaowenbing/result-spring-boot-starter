@@ -32,7 +32,7 @@ Business code only writes normal logic and `BaseException`; response formats and
 | Spring Boot | 4.0.6 |
 | Swagger annotations | Optional (`swagger-annotations`, only for `@Schema` documentation) |
 
-This repository targets the JDK 17 / Spring Boot 4.0.6 baseline; build output is Java 17 bytecode, ready to use in Spring Boot 4.x projects.
+This repository targets the JDK 21 / Spring Boot 4.0.6 baseline; build output is Java 21 bytecode, ready to use in Spring Boot 4.x projects.
 
 ## Quick Start
 
@@ -223,7 +223,7 @@ When a Controller declares a String return type, Spring has already selected `St
 
 ### 5. Does the current baseline already use the jakarta namespace?
 
-This repository itself is the JDK 17 / Spring Boot 4.0.6 (jakarta namespace) baseline, ready to use in Spring Boot 4.x projects with no namespace migration required.
+This repository itself is the JDK 21 / Spring Boot 4.0.6 (jakarta namespace) baseline, ready to use in Spring Boot 4.x projects with no namespace migration required.
 
 ## License
 

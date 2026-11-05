@@ -32,7 +32,7 @@ Spring Boot 统一返回结果 Starter：一行依赖接入，全站 Controller 
 | Spring Boot | 4.0.6 |
 | Swagger 注解 | 可选（`swagger-annotations`，仅用于 `@Schema` 文档描述） |
 
-本仓库为 JDK 17 / Spring Boot 4.0.6 基线，编译产物为 Java 17 字节码，可直接用于 Spring Boot 4.x 项目。
+本仓库为 JDK 21 / Spring Boot 4.0.6 基线，编译产物为 Java 21 字节码，可直接用于 Spring Boot 4.x 项目。
 
 ## 快速开始
 
@@ -223,7 +223,7 @@ Controller 声明返回 String 时，Spring 已选定 `StringHttpMessageConverte
 
 ### 5. 当前基线是否已使用 jakarta 命名空间？
 
-本仓库即为 JDK 17 / Spring Boot 4.0.6（jakarta 命名空间）基线，可直接用于 Spring Boot 4.x 项目，无需任何命名空间迁移。
+本仓库即为 JDK 21 / Spring Boot 4.0.6（jakarta 命名空间）基线，可直接用于 Spring Boot 4.x 项目，无需任何命名空间迁移。
 
 ## 许可证
 
